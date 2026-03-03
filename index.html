@@ -26,9 +26,12 @@
   .room-item.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
   .room-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
   .room-item .room-name { flex: 1; }
-  .room-item .del-room { background: none; border: none; cursor: pointer; color: var(--accent); font-size: 0.9rem; line-height: 1; opacity: 0; transition: opacity 0.15s; }
+  .room-item .del-room { background: none; border: none; cursor: pointer; color: #e82b2b; font-size: 0.9rem; line-height: 1; opacity: 0; transition: opacity 0.15s; }
   .room-item:hover .del-room { opacity: 1; }
   .room-item.active .del-room { opacity: 0.6; }
+  .room-item .dup-room { background: none; border: none; cursor: pointer; color: #fff; line-height: 1; opacity: 0; transition: opacity 0.15s; padding: 0; display: flex; align-items: center; }
+  .room-item:hover .dup-room { opacity: 1; }
+  .room-item.active .dup-room { opacity: 0.6; }
   .add-btn { width: 100%; padding: 7px; background: transparent; border: 1px dashed var(--muted); border-radius: 4px; font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted); cursor: pointer; margin-top: 6px; transition: all 0.15s; }
   .add-btn:hover { border-color: var(--ink); color: var(--ink); background: var(--bg); }
   .input-row { display: flex; gap: 6px; margin-bottom: 6px; align-items: center; }
@@ -531,7 +534,8 @@ function renderRoomList() {
   rooms.forEach(r => {
     const el = document.createElement('div');
     el.className = 'room-item'+(r.id===activeRoomId?' active':'');
-    el.innerHTML = `<div class="room-dot" style="background:${COLORS[r.colorIdx].b}"></div><div class="room-name">${r.name}</div><button class="del-room" onclick="deleteRoom('${r.id}',event)">✕</button>`;
+    const dupSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style="width:13px;height:13px;"><path d="M7 3.5A1.5 1.5 0 0 1 8.5 2h3.879a1.5 1.5 0 0 1 1.06.44l3.122 3.12A1.5 1.5 0 0 1 17 6.622V12.5a1.5 1.5 0 0 1-1.5 1.5h-1v-3.379a3 3 0 0 0-.879-2.121L10.5 5.379A3 3 0 0 0 8.379 4.5H7v-1Z"/><path d="M4.5 6A1.5 1.5 0 0 0 3 7.5v9A1.5 1.5 0 0 0 4.5 18h7a1.5 1.5 0 0 0 1.5-1.5v-5.879a1.5 1.5 0 0 0-.44-1.06L9.44 6.439A1.5 1.5 0 0 0 8.378 6H4.5Z"/></svg>`;
+    el.innerHTML = `<div class="room-dot" style="background:${COLORS[r.colorIdx].b}"></div><div class="room-name">${r.name}</div><button class="dup-room" onclick="duplicateRoom('${r.id}',event)" title="Duplicate room">${dupSvg}</button><button class="del-room" onclick="deleteRoom('${r.id}',event)">✕</button>`;
     el.addEventListener('click', ()=>setActiveRoom(r.id));
     list.appendChild(el);
   });
@@ -582,6 +586,29 @@ function deleteRoom(id,e) {
   e.stopPropagation();
   rooms = rooms.filter(r=>r.id!==id);
   if (activeRoomId===id) activeRoomId = rooms[0]?.id||null;
+  renderRoomList(); renderCanvas();
+}
+
+function duplicateRoom(id, e) {
+  e.stopPropagation();
+  const src = rooms.find(r=>r.id===id); if (!src) return;
+  // Generate a unique name: "Living Room" → "Living Room 2", "Living Room 2" → "Living Room 3", etc.
+  const baseName = src.name.replace(/ \d+$/, '');
+  let n = 2;
+  while (rooms.some(r => r.name === (n === 2 && !src.name.match(/ \d+$/) ? baseName+' 2' : baseName+' '+n))) n++;
+  const newName = baseName + ' ' + n;
+  // Deep-copy the room, place it fully to the right of the original with a 40px gap
+  const copy = JSON.parse(JSON.stringify(src));
+  copy.id = uid();
+  copy.name = newName;
+  const sc = S.get();
+  copy.x = src.x + Math.round(src.w * sc) + 40;
+  copy.y = src.y;
+  // Give each piece of furniture a new id
+  copy.furniture = copy.furniture.map(f => ({...f, id: uid()}));
+  copy.openings = (copy.openings||[]).map(w => ({...w, id: uid()}));
+  rooms.push(copy);
+  activeRoomId = copy.id;
   renderRoomList(); renderCanvas();
 }
 
@@ -1409,6 +1436,7 @@ function loadDesign(id) {
   rooms = JSON.parse(JSON.stringify(entry.rooms));
   activeRoomId = rooms[0]?.id || null;
   selFurn = null; selWo = null;
+  document.getElementById('savesDropdown').style.display = 'none';
   renderRoomList(); renderCanvas();
   showInfo('Loaded: ' + entry.name); setTimeout(hideInfo, 2500);
 }
