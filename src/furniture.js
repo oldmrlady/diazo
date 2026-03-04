@@ -168,9 +168,12 @@ export function makeFurnDraggable(el, room, f, showInfo, hideInfo) {
     state.activeRoomId = room.id;
     document.querySelectorAll('.room-canvas').forEach(el => el.classList.toggle('selected', el.dataset.rid === room.id));
 
+    // Update selection visuals without a full re-render
+    document.querySelectorAll('.furn-placed').forEach(fe => fe.classList.toggle('selected-f', fe.dataset.fid === f.id));
+    document.querySelectorAll('.wall-opening').forEach(wo => wo.classList.remove('selected-wo'));
+
     const sc = parseFloat(document.getElementById('zoomSlider').value);
     const ox = e.clientX, oy = e.clientY, sx = f.x, sy = f.y;
-    _renderCanvas && _renderCanvas();
     const mv = ev => {
       didDrag = true;
       const snapEnabled = state.snapEnabled;

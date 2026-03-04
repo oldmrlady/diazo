@@ -125,6 +125,7 @@ export function renderCanvas() {
       state.selFurn = null;
       state.selWo = null;
       setActiveRoom(room.id);
+      renderCanvas();
     });
 
     canvas.appendChild(el);

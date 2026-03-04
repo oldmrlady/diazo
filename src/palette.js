@@ -105,6 +105,7 @@ export function renderFurniturePalette(onFurnClick) {
         : `<span class="furn-icon">${f.icon}</span>`;
       el.innerHTML = `${paletteIconHtml}${f.label}<div style="font-size:0.44rem;color:#999;margin-top:1px">${ins(f.w)}×${ins(f.h)}</div>`;
       el.addEventListener('dragstart', e => { state.dragFurnType = f.id; e.dataTransfer.effectAllowed = 'copy'; });
+      el.addEventListener('dragend', () => { state.dragFurnType = null; });
       el.addEventListener('click', () => onFurnClick(f));
       grid.appendChild(el);
     });
