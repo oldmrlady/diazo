@@ -115,6 +115,14 @@ document.addEventListener('keyup', e => {
     canvasScroll.style.cursor = '';
   }
 });
+canvasScroll.addEventListener('scroll', () => {
+  const canvas = document.getElementById('canvas');
+  const minW = canvasScroll.clientWidth + canvasScroll.scrollLeft + 500;
+  const minH = canvasScroll.clientHeight + canvasScroll.scrollTop + 500;
+  if (minW > (parseInt(canvas.style.width) || 0)) canvas.style.width = minW + 'px';
+  if (minH > (parseInt(canvas.style.height) || 0)) canvas.style.height = minH + 'px';
+});
+
 canvasScroll.addEventListener('mousedown', e => {
   if (!state.spaceDown) return;
   e.preventDefault();
