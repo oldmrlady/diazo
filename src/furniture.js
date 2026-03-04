@@ -173,6 +173,10 @@ export function makeFurnDraggable(el, room, f, showInfo, hideInfo) {
     document.querySelectorAll('.furn-placed').forEach(fe => fe.classList.toggle('selected-f', fe.dataset.fid === f.id));
     document.querySelectorAll('.wall-opening').forEach(wo => wo.classList.remove('selected-wo'));
 
+    // Show settings immediately on press so the sidebar is never stale
+    showFurnSettings(f);
+    document.querySelector('.sidebar').scrollTop = 0;
+
     const sc = parseFloat(document.getElementById('zoomSlider').value);
     const ox = e.clientX, oy = e.clientY, sx = f.x, sy = f.y;
     const mv = ev => {
@@ -191,10 +195,10 @@ export function makeFurnDraggable(el, room, f, showInfo, hideInfo) {
       window.removeEventListener('mousemove', mv);
       window.removeEventListener('mouseup', up);
       hideInfo();
-      if (!didDrag) {
+      if (!didDrag && state.selFurn === f.id) {
         showFurnSettings(f);
         document.querySelector('.sidebar').scrollTop = 0;
-      } else {
+      } else if (didDrag) {
         pushHistory();
         const xEl = document.getElementById('editFurnX');
         const yEl = document.getElementById('editFurnY');
