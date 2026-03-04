@@ -45,6 +45,7 @@ document.getElementById('editW').addEventListener('input', updateActiveRoom);
 document.getElementById('editH').addEventListener('input', updateActiveRoom);
 document.getElementById('editWoSize').addEventListener('input', updateActiveWo);
 document.getElementById('editWoOffset').addEventListener('input', updateActiveWo);
+document.getElementById('editFurnDiam').addEventListener('input', updateActiveFurn);
 document.getElementById('editFurnW').addEventListener('input', updateActiveFurn);
 document.getElementById('editFurnH').addEventListener('input', updateActiveFurn);
 document.getElementById('editFurnX').addEventListener('input', updateActiveFurn);

@@ -52,13 +52,14 @@ export function renderCanvas() {
       fel.className = 'furn-placed' + (isSel ? ' selected-f' : '');
       fel.dataset.fid = f.id;
       const isRug = f.type === 'rug';
+      const isCircular = !!fdef?.circular;
       const furnBg = col.bg.replace(/[\d.]+\)$/, '0.34)');
       const rugBg = isRug ? (f.rugColor || '#c8a882') : furnBg;
       const rugOpacity = isRug ? '0.55' : '1';
       const frot = f.rot || 0;
-      fel.style.cssText = `left:${f.x * sc}px;top:${f.y * sc}px;width:${fw}px;height:${fh}px;background:${rugBg};opacity:${rugOpacity};z-index:${isRug ? 1 : 5};${f.type === 'lamp' ? 'border-radius:50%;' : ''}transform:rotate(${frot}deg);transform-origin:center center;`;
+      fel.style.cssText = `left:${f.x * sc}px;top:${f.y * sc}px;width:${fw}px;height:${fh}px;background:${rugBg};opacity:${rugOpacity};z-index:${isRug ? 1 : 5};${isCircular ? 'border-radius:50%;' : ''}transform:rotate(${frot}deg);transform-origin:center center;`;
 
-      if (f.type !== 'lamp') {
+      if (!isCircular) {
         const dimTop = document.createElement('div');
         dimTop.className = 'fd-top';
         dimTop.innerHTML = `
@@ -88,7 +89,7 @@ export function renderCanvas() {
       fel.appendChild(ctrl);
 
       if (!isRug) {
-        const iconSize = f.type === 'lamp' ? Math.min(fw, fh) * 0.7 : Math.min(fw, fh) * 0.45;
+        const iconSize = isCircular ? Math.min(fw, fh) * 0.7 : Math.min(fw, fh) * 0.45;
         if (FURNITURE_SVGS[f.type]) {
           const iconWrap = document.createElement('div');
           iconWrap.className = 'f-icon';
@@ -99,7 +100,7 @@ export function renderCanvas() {
           const icon = document.createElement('div');
           icon.className = 'f-icon';
           icon.textContent = fdef.icon;
-          icon.style.fontSize = f.type === 'lamp' ? '1rem' : `${Math.max(0.6, Math.min(fw, fh) * 0.035)}rem`;
+          icon.style.fontSize = isCircular ? '1rem' : `${Math.max(0.6, Math.min(fw, fh) * 0.035)}rem`;
           fel.appendChild(icon);
         }
         const name = document.createElement('div');

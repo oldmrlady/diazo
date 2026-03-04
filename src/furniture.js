@@ -16,12 +16,16 @@ export function showFurnSettings(f) {
   const fdef = FURNITURE.find(x => x.id === f.type);
   const isCustom = f.type === 'custom';
   const isRug = f.type === 'rug';
+  const isCircular = !!fdef?.circular;
   document.getElementById('contextPanel').style.display = 'block';
   document.getElementById('roomSettings').style.display = 'none';
   document.getElementById('openingSettings').style.display = 'none';
   document.getElementById('furnSettings').style.display = 'block';
   document.getElementById('furnNameRow').style.display = isCustom ? 'flex' : 'none';
   document.getElementById('rugColorRow').style.display = isRug ? 'flex' : 'none';
+  document.getElementById('furnDiamRow').style.display = isCircular ? 'flex' : 'none';
+  document.getElementById('furnWidthRow').style.display = isCircular ? 'none' : 'flex';
+  document.getElementById('furnDepthRow').style.display = isCircular ? 'none' : 'flex';
   if (isCustom) document.getElementById('editFurnName').value = f.customLabel || '';
   if (isRug) {
     const col = f.rugColor || '#c8a882';
@@ -29,8 +33,12 @@ export function showFurnSettings(f) {
     document.getElementById('rugColorHex').textContent = col;
   }
   document.getElementById('furnSettingsTitle').textContent = (f.customLabel || fdef?.label || 'Furniture') + ' Settings';
-  document.getElementById('editFurnW').value = f.w;
-  document.getElementById('editFurnH').value = f.h;
+  if (isCircular) {
+    document.getElementById('editFurnDiam').value = f.w;
+  } else {
+    document.getElementById('editFurnW').value = f.w;
+    document.getElementById('editFurnH').value = f.h;
+  }
   document.getElementById('editFurnX').value = Math.round(f.x);
   document.getElementById('editFurnY').value = Math.round(f.y);
   const rot = f.rot || 0;
@@ -44,12 +52,18 @@ export function updateActiveFurn() {
   if (!room) return;
   const f = room.furniture.find(x => x.id === state.selFurn);
   if (!f) return;
-  const nw = parseInt(document.getElementById('editFurnW').value);
-  const nh = parseInt(document.getElementById('editFurnH').value);
+  const fdef = FURNITURE.find(x => x.id === f.type);
   const nx = parseInt(document.getElementById('editFurnX').value);
   const ny = parseInt(document.getElementById('editFurnY').value);
-  if (nw >= 1) f.w = nw;
-  if (nh >= 1) f.h = nh;
+  if (fdef?.circular) {
+    const nd = parseInt(document.getElementById('editFurnDiam').value);
+    if (nd >= 1) { f.w = nd; f.h = nd; }
+  } else {
+    const nw = parseInt(document.getElementById('editFurnW').value);
+    const nh = parseInt(document.getElementById('editFurnH').value);
+    if (nw >= 1) f.w = nw;
+    if (nh >= 1) f.h = nh;
+  }
   if (!isNaN(nx) && nx >= 0) f.x = nx;
   if (!isNaN(ny) && ny >= 0) f.y = ny;
   if (f.type === 'custom') {
