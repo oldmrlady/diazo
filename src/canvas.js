@@ -3,7 +3,7 @@ import { state } from './state.js';
 import { ins, snapV, showInfo, hideInfo } from './utils.js';
 import { renderWallOpening, showOpeningSettings } from './openings.js';
 import { makeFurnDraggable, showFurnSettings, placeFurniture, deleteFurn } from './furniture.js';
-import { setActiveRoom, renderRoomList, duplicateRoom, deleteRoom } from './rooms.js';
+import { setActiveRoom, renderRoomList } from './rooms.js';
 import { cancelWallTool } from './palette.js';
 
 export function renderCanvas() {
@@ -134,20 +134,6 @@ export function renderCanvas() {
       e.stopPropagation();
       const [roomId, furnId] = btn.dataset.deleteFurn.split('|');
       deleteFurn(roomId, furnId);
-    });
-  });
-
-  // Event delegation for room dup/del buttons
-  canvas.closest('body')?.querySelectorAll('[data-dup]').forEach(btn => {
-    btn.addEventListener('click', e => {
-      e.stopPropagation();
-      duplicateRoom(btn.dataset.dup, e);
-    });
-  });
-  canvas.closest('body')?.querySelectorAll('[data-del]').forEach(btn => {
-    btn.addEventListener('click', e => {
-      e.stopPropagation();
-      deleteRoom(btn.dataset.del, e);
     });
   });
 
