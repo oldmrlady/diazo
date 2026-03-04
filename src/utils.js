@@ -3,7 +3,7 @@ import { state } from './state.js';
 
 export { S } from './constants.js';
 
-let nid = 1;
+let nid = Date.now();
 export function uid() { return 'i' + (nid++); }
 
 export function ins(v) {

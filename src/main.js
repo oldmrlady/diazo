@@ -193,7 +193,7 @@ renderSavesList();
 
 // Starter room
 (() => {
-  const r = { id: 'i1', name: 'Living Room', w: 137, h: 182, colorIdx: 0, x: 50, y: 50, furniture: [], openings: [] };
+  const r = { id: uid(), name: 'Living Room', w: 137, h: 182, colorIdx: 0, x: 50, y: 50, furniture: [], openings: [] };
   state.rooms.push(r);
   state.activeRoomId = r.id;
   renderRoomList();
