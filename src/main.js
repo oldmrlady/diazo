@@ -72,6 +72,11 @@ document.getElementById('batchFurnishBtn').addEventListener('click', batchFurnis
 document.getElementById('saveDesignBtn').addEventListener('click', saveDesign);
 document.getElementById('saveNameInput').addEventListener('keydown', e => { if (e.key === 'Enter') saveDesign(); });
 
+// ─── ENTER IN SETTINGS INPUTS → BLUR (COMMIT & RELEASE FOCUS) ───
+document.querySelector('.sidebar').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.target.tagName === 'INPUT') e.target.blur();
+});
+
 // ─── CANVAS CLICK DESELECT ───
 document.getElementById('canvasScroll').addEventListener('click', e => {
   if (e.target === document.getElementById('canvasScroll') || e.target === document.getElementById('canvas')) {
