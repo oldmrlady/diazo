@@ -223,8 +223,8 @@ function makeWallClickHandler(el, room) {
     let off = snapV(rawOff / sc - wt.size / 2);
     off = Math.max(0, Math.min(wallLen - wt.size, off));
     if (!room.openings) room.openings = [];
-    pushHistory();
     room.openings.push({ id: (Math.random().toString(36).slice(2)), type: state.activeWallTool, wall, offset: off, size: wt.size });
+    pushHistory();
     cancelWallTool();
     renderCanvas();
   });

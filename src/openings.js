@@ -211,8 +211,8 @@ export function deleteSelWo() {
 export function deleteWo(roomId, woId) {
   const room = state.rooms.find(r => r.id === roomId);
   if (!room) return;
-  pushHistory();
   room.openings = room.openings.filter(w => w.id !== woId);
+  pushHistory();
   state.selWo = null;
   document.getElementById('openingSettings').style.display = 'none';
   document.getElementById('roomSettings').style.display = 'block';

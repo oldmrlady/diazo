@@ -29,8 +29,8 @@ document.getElementById('batchBtn').addEventListener('click', toggleBatchMode);
 document.getElementById('clearFurnBtn').addEventListener('click', () => {
   const r = state.rooms.find(r => r.id === state.activeRoomId);
   if (!r) return;
-  pushHistory();
   r.furniture = [];
+  pushHistory();
   renderCanvas();
 });
 document.getElementById('printBtn').addEventListener('click', openPrintModal);

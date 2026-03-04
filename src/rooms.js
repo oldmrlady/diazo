@@ -84,9 +84,9 @@ export function updateActiveRoom() {
 
 export function deleteRoom(id, e) {
   e.stopPropagation();
-  pushHistory();
   state.rooms = state.rooms.filter(r => r.id !== id);
   if (state.activeRoomId === id) state.activeRoomId = state.rooms[0]?.id || null;
+  pushHistory();
   renderRoomList();
   _renderCanvas && _renderCanvas();
 }

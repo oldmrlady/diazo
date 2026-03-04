@@ -100,8 +100,8 @@ export function placeFurniture(fdef, roomId, x, y) {
   const room = state.rooms.find(r => r.id === roomId);
   if (!room) return;
   const f = { id: uid(), type: fdef.id, x, y, w: fdef.w, h: fdef.h, rot: 0 };
-  pushHistory();
   room.furniture.push(f);
+  pushHistory();
   state.selFurn = f.id;
   state.selWo = null;
   _renderCanvas && _renderCanvas();
@@ -119,8 +119,8 @@ export function rotateFurn(roomId, furnId) {
 export function deleteFurn(roomId, furnId) {
   const room = state.rooms.find(r => r.id === roomId);
   if (!room) return;
-  pushHistory();
   room.furniture = room.furniture.filter(f => f.id !== furnId);
+  pushHistory();
   state.selFurn = null;
   document.getElementById('contextPanel').style.display = 'block';
   document.getElementById('roomSettings').style.display = 'block';
