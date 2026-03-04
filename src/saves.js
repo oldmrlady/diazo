@@ -1,5 +1,6 @@
 import { state } from './state.js';
 import { uid, showInfo, hideInfo } from './utils.js';
+import { pushHistory } from './history.js';
 
 const SAVES_KEY = 'diazo_saves';
 
@@ -35,6 +36,7 @@ export function loadDesign(id) {
   state.activeRoomId = state.rooms[0]?.id || null;
   state.selFurn = null;
   state.selWo = null;
+  pushHistory();
   document.getElementById('savesDropdown').style.display = 'none';
   _renderRoomList && _renderRoomList();
   _renderCanvas && _renderCanvas();
