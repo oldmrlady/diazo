@@ -115,7 +115,7 @@ export function doPrint() {
 </head>
 <body>
   <header>
-    <div><h1>Graham</h1><div class="sub">Floor Plan Report</div></div>
+    <div><h1>Diazo</h1><div class="sub">Floor Plan Report</div></div>
     <div class="date">${date}</div>
   </header>
   ${body || '<p style="color:#7a7068">No rooms to display.</p>'}
