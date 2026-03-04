@@ -1,0 +1,26 @@
+{
+  "name": "diazo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oldmrlady/diazo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/oldmrlady/diazo/issues"
+  },
+  "homepage": "https://github.com/oldmrlady/diazo#readme",
+  "devDependencies": {
+    "vite": "^7.3.1"
+  }
+}
