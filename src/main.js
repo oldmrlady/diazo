@@ -101,10 +101,12 @@ document.getElementById('canvasScroll').addEventListener('wheel', e => {
 // ─── SPACEBAR PAN ───
 const canvasScroll = document.getElementById('canvasScroll');
 document.addEventListener('keydown', e => {
-  if (e.code === 'Space' && !e.target.matches('input, textarea') && !state.spaceDown) {
+  if (e.code === 'Space' && !e.target.matches('input, textarea')) {
     e.preventDefault();
-    state.spaceDown = true;
-    canvasScroll.style.cursor = 'grab';
+    if (!state.spaceDown) {
+      state.spaceDown = true;
+      canvasScroll.style.cursor = 'grab';
+    }
   }
 });
 document.addEventListener('keyup', e => {
