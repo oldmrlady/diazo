@@ -119,7 +119,8 @@ export function placeFurniture(fdef, roomId, x, y) {
   state.selFurn = f.id;
   state.selWo = null;
   _renderCanvas && _renderCanvas();
-  setTimeout(() => { showFurnSettings(f); document.querySelector('.sidebar').scrollTop = 0; }, 0);
+  showFurnSettings(f);
+  document.querySelector('.sidebar').scrollTop = 0;
 }
 
 export function rotateFurn(roomId, furnId) {
