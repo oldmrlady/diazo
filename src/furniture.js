@@ -143,9 +143,9 @@ export function clearFurniture() {
 export function makeFurnDraggable(el, room, f, showInfo, hideInfo) {
   let didDrag = false;
   el.addEventListener('mousedown', e => {
-    e.stopPropagation();
     if (e.target.closest('.furn-controls')) return;
     if (state.spaceDown) return;
+    e.stopPropagation();
     didDrag = false;
     state.selFurn = f.id;
     state.selWo = null;
