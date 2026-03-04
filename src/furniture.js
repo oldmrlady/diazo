@@ -145,6 +145,7 @@ export function makeFurnDraggable(el, room, f, showInfo, hideInfo) {
   el.addEventListener('mousedown', e => {
     e.stopPropagation();
     if (e.target.closest('.furn-controls')) return;
+    if (state.spaceDown) return;
     didDrag = false;
     state.selFurn = f.id;
     state.selWo = null;

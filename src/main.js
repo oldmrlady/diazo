@@ -98,6 +98,40 @@ document.getElementById('canvasScroll').addEventListener('wheel', e => {
   renderCanvas();
 }, { passive: false });
 
+// ─── SPACEBAR PAN ───
+const canvasScroll = document.getElementById('canvasScroll');
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space' && !e.target.matches('input, textarea') && !state.spaceDown) {
+    e.preventDefault();
+    state.spaceDown = true;
+    canvasScroll.style.cursor = 'grab';
+  }
+});
+document.addEventListener('keyup', e => {
+  if (e.code === 'Space') {
+    state.spaceDown = false;
+    canvasScroll.style.cursor = '';
+  }
+});
+canvasScroll.addEventListener('mousedown', e => {
+  if (!state.spaceDown) return;
+  e.preventDefault();
+  canvasScroll.style.cursor = 'grabbing';
+  const startX = e.clientX + canvasScroll.scrollLeft;
+  const startY = e.clientY + canvasScroll.scrollTop;
+  const mv = ev => {
+    canvasScroll.scrollLeft = startX - ev.clientX;
+    canvasScroll.scrollTop = startY - ev.clientY;
+  };
+  const up = () => {
+    window.removeEventListener('mousemove', mv);
+    window.removeEventListener('mouseup', up);
+    canvasScroll.style.cursor = state.spaceDown ? 'grab' : '';
+  };
+  window.addEventListener('mousemove', mv);
+  window.addEventListener('mouseup', up);
+});
+
 // ─── KEYBOARD ───
 document.addEventListener('keydown', e => {
   if ((e.metaKey || e.ctrlKey) && e.key === 'z') {

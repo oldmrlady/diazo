@@ -149,6 +149,7 @@ function makeRoomDraggable(el, room) {
     if (e.target.classList.contains('resize-handle')) return;
     if (e.target.closest('.furn-placed') || e.target.closest('.wall-opening')) return;
     if (state.activeWallTool) return;
+    if (state.spaceDown) return;
     setActiveRoom(room.id);
     const ox = e.clientX, oy = e.clientY, sx = room.x, sy = room.y;
     const mv = ev => {

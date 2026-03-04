@@ -11,4 +11,5 @@ export const state = {
   batchMode: false,
   batchQueue: [],
   batchPendingFdef: null,
+  spaceDown: false,
 };
