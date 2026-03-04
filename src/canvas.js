@@ -138,8 +138,9 @@ export function renderCanvas() {
     });
   });
 
-  canvas.style.width = maxX + 'px';
-  canvas.style.height = maxY + 'px';
+  const scrollEl = document.getElementById('canvasScroll');
+  canvas.style.width = Math.max(maxX, scrollEl.clientWidth + scrollEl.scrollLeft + 300) + 'px';
+  canvas.style.height = Math.max(maxY, scrollEl.clientHeight + scrollEl.scrollTop + 300) + 'px';
   document.getElementById('scaleInfo').textContent = `${(12 * sc).toFixed(0)}px = 1 ft`;
   document.getElementById('zoomLabel').textContent = `${Math.round(sc / 3 * 100)}%`;
 }
