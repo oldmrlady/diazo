@@ -2,6 +2,7 @@ import { COLORS } from './constants.js';
 import { state } from './state.js';
 import { uid, ins } from './utils.js';
 import { renderSwatches, renderSwatchesSplit } from './palette.js';
+import { pushHistory } from './history.js';
 
 // Imported lazily to avoid circular deps — set via init
 let _renderCanvas = null;
@@ -83,6 +84,7 @@ export function updateActiveRoom() {
 
 export function deleteRoom(id, e) {
   e.stopPropagation();
+  pushHistory();
   state.rooms = state.rooms.filter(r => r.id !== id);
   if (state.activeRoomId === id) state.activeRoomId = state.rooms[0]?.id || null;
   renderRoomList();
@@ -107,6 +109,7 @@ export function duplicateRoom(id, e) {
   copy.openings = (copy.openings || []).map(w => ({ ...w, id: uid() }));
   state.rooms.push(copy);
   state.activeRoomId = copy.id;
+  pushHistory();
   renderRoomList();
   _renderCanvas && _renderCanvas();
 }
@@ -132,6 +135,7 @@ export function confirmAddRoom() {
   state.newRoomColor = (state.newRoomColor + 1) % COLORS.length;
   state.rooms.push(room);
   state.activeRoomId = room.id;
+  pushHistory();
   closeModal();
   renderRoomList();
   _renderCanvas && _renderCanvas();

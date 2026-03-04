@@ -1,6 +1,7 @@
 import { state } from './state.js';
 import { uid, ins, showInfo, hideInfo } from './utils.js';
 import { setShowBatchPanelRef } from './rooms.js';
+import { pushHistory } from './history.js';
 
 let _renderCanvas = null;
 let _renderRoomList = null;
@@ -147,6 +148,7 @@ export function batchFurnish() {
     rowH = Math.max(rowH, item.h);
   });
 
+  pushHistory();
   state.batchQueue = [];
   toggleBatchMode();
   _renderCanvas && _renderCanvas();

@@ -2,6 +2,7 @@ import { FURNITURE, FURNITURE_SVGS } from './constants.js';
 import { state } from './state.js';
 import { uid, ins } from './utils.js';
 import { renderSwatchesSplit } from './palette.js';
+import { pushHistory } from './history.js';
 
 let _renderCanvas = null;
 let _renderRoomList = null;
@@ -99,6 +100,7 @@ export function placeFurniture(fdef, roomId, x, y) {
   const room = state.rooms.find(r => r.id === roomId);
   if (!room) return;
   const f = { id: uid(), type: fdef.id, x, y, w: fdef.w, h: fdef.h, rot: 0 };
+  pushHistory();
   room.furniture.push(f);
   state.selFurn = f.id;
   state.selWo = null;
@@ -117,6 +119,7 @@ export function rotateFurn(roomId, furnId) {
 export function deleteFurn(roomId, furnId) {
   const room = state.rooms.find(r => r.id === roomId);
   if (!room) return;
+  pushHistory();
   room.furniture = room.furniture.filter(f => f.id !== furnId);
   state.selFurn = null;
   document.getElementById('contextPanel').style.display = 'block';
@@ -173,6 +176,7 @@ export function makeFurnDraggable(el, room, f, showInfo, hideInfo) {
         showFurnSettings(f);
         document.querySelector('.sidebar').scrollTop = 0;
       } else {
+        pushHistory();
         const xEl = document.getElementById('editFurnX');
         const yEl = document.getElementById('editFurnY');
         if (xEl) xEl.value = Math.round(f.x);

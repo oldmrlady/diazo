@@ -11,6 +11,7 @@ import { toggleBatchMode, batchAddItem, batchFurnish, batchSelectFurniture, init
 import { saveDesign, loadDesign, deleteDesign, renderSavesList, toggleSavesPanel, initSavesCallbacks } from './saves.js';
 import { openPrintModal, closePrintModal, doPrint } from './print.js';
 import { initFurnitureCallbacks, placeFurniture } from './furniture.js';
+import { pushHistory, undo, redo } from './history.js';
 
 // Wire up cross-module callbacks to break circular deps
 initRoomsCallbacks(renderCanvas, showFurnSettings, showOpeningSettings);
@@ -28,12 +29,15 @@ document.getElementById('batchBtn').addEventListener('click', toggleBatchMode);
 document.getElementById('clearFurnBtn').addEventListener('click', () => {
   const r = state.rooms.find(r => r.id === state.activeRoomId);
   if (!r) return;
+  pushHistory();
   r.furniture = [];
   renderCanvas();
 });
 document.getElementById('printBtn').addEventListener('click', openPrintModal);
 document.getElementById('savesBtn').addEventListener('click', toggleSavesPanel);
 document.getElementById('snapBtn').addEventListener('click', toggleSnap);
+document.getElementById('undoBtn').addEventListener('click', () => undo(renderCanvas, renderRoomList));
+document.getElementById('redoBtn').addEventListener('click', () => redo(renderCanvas, renderRoomList));
 
 // ─── SIDEBAR INPUTS ───
 document.getElementById('editName').addEventListener('input', updateActiveRoom);
@@ -96,6 +100,12 @@ document.getElementById('canvasScroll').addEventListener('wheel', e => {
 
 // ─── KEYBOARD ───
 document.addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'z') {
+    e.preventDefault();
+    if (e.shiftKey) redo(renderCanvas, renderRoomList);
+    else undo(renderCanvas, renderRoomList);
+    return;
+  }
   if (e.key === 'Delete' || e.key === 'Backspace') {
     if (e.target.tagName === 'INPUT') return;
     if (state.selFurn) {
@@ -138,4 +148,5 @@ renderSavesList();
   state.activeRoomId = r.id;
   renderRoomList();
   renderCanvas();
+  pushHistory();
 })();

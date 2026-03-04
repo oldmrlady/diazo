@@ -2,6 +2,7 @@ import { WALL_TYPES } from './constants.js';
 import { state } from './state.js';
 import { ins } from './utils.js';
 import { renderSwatchesSplit } from './palette.js';
+import { pushHistory } from './history.js';
 
 let _renderCanvas = null;
 let _renderRoomList = null;
@@ -169,6 +170,7 @@ function makeWoDraggable(el, room, wo, sc, isHoriz, HIT, roomX, roomY) {
     const onUp = () => {
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('mouseup', onUp);
+      pushHistory();
     };
     window.addEventListener('mousemove', onMove);
     window.addEventListener('mouseup', onUp);
@@ -209,6 +211,7 @@ export function deleteSelWo() {
 export function deleteWo(roomId, woId) {
   const room = state.rooms.find(r => r.id === roomId);
   if (!room) return;
+  pushHistory();
   room.openings = room.openings.filter(w => w.id !== woId);
   state.selWo = null;
   document.getElementById('openingSettings').style.display = 'none';

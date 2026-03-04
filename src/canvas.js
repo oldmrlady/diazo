@@ -5,6 +5,7 @@ import { renderWallOpening, showOpeningSettings } from './openings.js';
 import { makeFurnDraggable, showFurnSettings, placeFurniture, deleteFurn } from './furniture.js';
 import { setActiveRoom, renderRoomList } from './rooms.js';
 import { cancelWallTool } from './palette.js';
+import { pushHistory } from './history.js';
 
 export function renderCanvas() {
   const canvas = document.getElementById('canvas');
@@ -218,6 +219,7 @@ function makeWallClickHandler(el, room) {
     let off = snapV(rawOff / sc - wt.size / 2);
     off = Math.max(0, Math.min(wallLen - wt.size, off));
     if (!room.openings) room.openings = [];
+    pushHistory();
     room.openings.push({ id: (Math.random().toString(36).slice(2)), type: state.activeWallTool, wall, offset: off, size: wt.size });
     cancelWallTool();
     renderCanvas();
