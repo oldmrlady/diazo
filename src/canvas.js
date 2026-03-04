@@ -1,4 +1,6 @@
 import { COLORS, FURNITURE, FURNITURE_SVGS, WALL_TYPES, S } from './constants.js';
+
+export const CANVAS_PAD = 500;
 import { state } from './state.js';
 import { ins, snapV, showInfo, hideInfo } from './utils.js';
 import { renderWallOpening, showOpeningSettings } from './openings.js';
@@ -19,7 +21,7 @@ export function renderCanvas() {
     const el = document.createElement('div');
     el.className = 'room-canvas' + (room.id === state.activeRoomId ? ' selected' : '');
     el.dataset.rid = room.id;
-    el.style.cssText = `left:${room.x}px;top:${room.y}px;width:${pw}px;height:${ph}px;border-color:${col.b};background:${col.bg};`;
+    el.style.cssText = `left:${room.x + CANVAS_PAD}px;top:${room.y + CANVAS_PAD}px;width:${pw}px;height:${ph}px;border-color:${col.b};background:${col.bg};`;
 
     el.innerHTML = `
       <div class="room-label" style="color:${col.b}">${room.name}</div>
@@ -110,7 +112,7 @@ export function renderCanvas() {
       el.appendChild(fel);
     });
 
-    (room.openings || []).forEach(wo => renderWallOpening(canvas, room, wo, sc, col, room.x, room.y));
+    (room.openings || []).forEach(wo => renderWallOpening(canvas, room, wo, sc, col, room.x + CANVAS_PAD, room.y + CANVAS_PAD));
 
     makeRoomDraggable(el, room);
     makeRoomResizable(el, room);
@@ -125,8 +127,8 @@ export function renderCanvas() {
     });
 
     canvas.appendChild(el);
-    maxX = Math.max(maxX, room.x + pw + 80);
-    maxY = Math.max(maxY, room.y + ph + 80);
+    maxX = Math.max(maxX, room.x + CANVAS_PAD + pw + 80);
+    maxY = Math.max(maxY, room.y + CANVAS_PAD + ph + 80);
   });
 
   // Event delegation for furn delete buttons

@@ -2,7 +2,7 @@ import './style.css';
 
 import { state } from './state.js';
 import { uid, showInfo } from './utils.js';
-import { renderCanvas, zoomStep, toggleSnap } from './canvas.js';
+import { renderCanvas, zoomStep, toggleSnap, CANVAS_PAD } from './canvas.js';
 import { renderRoomList, setActiveRoom, updateActiveRoom, openAddRoomModal, closeModal, confirmAddRoom, initRoomsCallbacks, deleteRoom, duplicateRoom } from './rooms.js';
 import { renderWallPalette, renderFurniturePalette, renderSwatches, cancelWallTool } from './palette.js';
 import { showFurnSettings, updateActiveFurn, syncFurnRotFromSlider, syncFurnRotFromField, deleteFurnSel, rotateFurnSel, deleteFurn } from './furniture.js';
@@ -193,4 +193,8 @@ renderSavesList();
   renderRoomList();
   renderCanvas();
   pushHistory();
+  // Initialize scroll so there's room to pan in all directions
+  const scroller = document.getElementById('canvasScroll');
+  scroller.scrollLeft = CANVAS_PAD;
+  scroller.scrollTop = CANVAS_PAD;
 })();
