@@ -33,6 +33,8 @@ header .subtitle { font-size: 0.7rem; color: #ffffff; text-transform: uppercase;
 .input-row input, .input-row select { flex: 1; padding: 5px 7px; font-family: 'DM Mono', monospace; font-size: 0.73rem; background: var(--paper); border: 1px solid var(--grid); border-radius: 3px; color: var(--ink); }
 .input-row input:focus { outline: none; border-color: var(--accent); }
 .input-row input[type=range] { padding: 0; border: none; background: transparent; }
+.input-row input[type=number]::-webkit-inner-spin-button,
+.input-row input[type=number]::-webkit-outer-spin-button { opacity: 1; }
 .color-swatches { display: flex; gap: 6px; margin-top: 4px; }
 .color-swatches.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-top: 0; }
 .swatch { width: 22px; height: 22px; border-radius: 3px; cursor: pointer; border: 2px solid transparent; transition: border-color 0.1s; }
