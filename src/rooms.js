@@ -100,10 +100,9 @@ export function duplicateRoom(id, e) {
   while (state.rooms.some(r => r.name === (n === 2 && !src.name.match(/ \d+$/) ? baseName + ' 2' : baseName + ' ' + n))) n++;
   const newName = baseName + ' ' + n;
   const copy = JSON.parse(JSON.stringify(src));
-  const sc = parseFloat(document.getElementById('zoomSlider').value);
   copy.id = uid();
   copy.name = newName;
-  copy.x = src.x + Math.round(src.w * sc) + 40;
+  copy.x = src.x + src.w + 20;
   copy.y = src.y;
   copy.furniture = copy.furniture.map(f => ({ ...f, id: uid() }));
   copy.openings = (copy.openings || []).map(w => ({ ...w, id: uid() }));
@@ -131,7 +130,7 @@ export function confirmAddRoom() {
   const name = document.getElementById('newRoomName').value || 'Room';
   const w = parseFloat(document.getElementById('newRoomW').value) || 192;
   const h = parseFloat(document.getElementById('newRoomH').value) || 156;
-  const room = { id: uid(), name, w, h, colorIdx: state.newRoomColor, x: 30 + state.rooms.length * 25, y: 30 + state.rooms.length * 18, furniture: [], openings: [] };
+  const room = { id: uid(), name, w, h, colorIdx: state.newRoomColor, x: 10 + state.rooms.length * 8, y: 10 + state.rooms.length * 6, furniture: [], openings: [] };
   state.newRoomColor = (state.newRoomColor + 1) % COLORS.length;
   state.rooms.push(room);
   state.activeRoomId = room.id;

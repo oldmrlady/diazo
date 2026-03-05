@@ -21,7 +21,7 @@ export function renderCanvas() {
     const el = document.createElement('div');
     el.className = 'room-canvas' + (room.id === state.activeRoomId ? ' selected' : '');
     el.dataset.rid = room.id;
-    el.style.cssText = `left:${room.x + CANVAS_PAD}px;top:${room.y + CANVAS_PAD}px;width:${pw}px;height:${ph}px;border-color:${col.b};background:${col.bg};`;
+    el.style.cssText = `left:${room.x * sc + CANVAS_PAD}px;top:${room.y * sc + CANVAS_PAD}px;width:${pw}px;height:${ph}px;border-color:${col.b};background:${col.bg};`;
 
     el.innerHTML = `
       <div class="room-label" style="color:${col.b}">${room.name}</div>
@@ -113,7 +113,7 @@ export function renderCanvas() {
       el.appendChild(fel);
     });
 
-    (room.openings || []).forEach(wo => renderWallOpening(canvas, room, wo, sc, col, room.x + CANVAS_PAD, room.y + CANVAS_PAD));
+    (room.openings || []).forEach(wo => renderWallOpening(canvas, room, wo, sc, col, room.x * sc + CANVAS_PAD, room.y * sc + CANVAS_PAD));
 
     makeRoomDraggable(el, room);
     makeRoomResizable(el, room);
@@ -129,8 +129,8 @@ export function renderCanvas() {
     });
 
     canvas.appendChild(el);
-    maxX = Math.max(maxX, room.x + CANVAS_PAD + pw + 80);
-    maxY = Math.max(maxY, room.y + CANVAS_PAD + ph + 80);
+    maxX = Math.max(maxX, room.x * sc + CANVAS_PAD + pw + 80);
+    maxY = Math.max(maxY, room.y * sc + CANVAS_PAD + ph + 80);
   });
 
   // Event delegation for furn delete buttons
@@ -156,10 +156,11 @@ function makeRoomDraggable(el, room) {
     if (state.activeWallTool) return;
     if (state.spaceDown) return;
     setActiveRoom(room.id);
+    const sc = S.get();
     const ox = e.clientX, oy = e.clientY, sx = room.x, sy = room.y;
     const mv = ev => {
-      room.x = Math.max(0, Math.round((sx + ev.clientX - ox) / 10) * 10);
-      room.y = Math.max(0, Math.round((sy + ev.clientY - oy) / 10) * 10);
+      room.x = Math.max(0, Math.round((sx + (ev.clientX - ox) / sc) / 6) * 6);
+      room.y = Math.max(0, Math.round((sy + (ev.clientY - oy) / sc) / 6) * 6);
       renderCanvas();
     };
     const up = () => { window.removeEventListener('mousemove', mv); window.removeEventListener('mouseup', up); };
